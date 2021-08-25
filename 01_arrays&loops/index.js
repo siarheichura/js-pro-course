@@ -1,3 +1,26 @@
+// Функция сравнения двух объектов
+
+function isObjEqual(obj1, obj2) {
+    let keys1 = Object.keys(obj1)
+    let keys2 = Object.keys(obj2)
+    let values1 = Object.values(obj1)
+    let values2 = Object.values(obj2)
+    if(keys1.length !== keys2.length) {
+        return false
+    } 
+    for(let i = 0; i < keys1.length; i++) {
+        if(keys2.includes(keys1[i]) === false) {
+            return false
+        }
+    }
+    for(let i = 0; i < values1.length; i++) {
+        if(values2.includes(values1[i]) === false) {
+            return false
+        }
+    }
+    return true
+}
+
 // №1
 // Создать массив из 10 чисел. Необходимо создать новый массив, в котором числа будут возведены в квадрат. Например: [1,2,3] -> [1,4,9].
 
@@ -17,12 +40,13 @@ let sumArr = numbers.reduce((prev, curr) => prev + curr, 0)
 
 function setColon(num) {
     let strArr = ('' + num).split('')
-    for(let i = 0; i < strArr.length; i++) {
-        if(strArr[i - 1] % 2 && strArr[i] % 2) {
-            strArr.splice(i, 0, ':')
-        }
-    }
-    return strArr.join('')
+    let result = strArr.reduce((prev, curr, index) => {
+        if(prev !== '' && curr%2 !== 0 && strArr[index - 1]%2 !== 0) {
+            return prev + ':' + curr  
+        } 
+        return prev + curr        
+    },'')
+    return result
 }
 
 
@@ -31,9 +55,9 @@ function setColon(num) {
 
 let arr1 = [1,20,33,14,5,6,7,8,9,10]
 let arr2 = [6,7,41,9,10]
-let arrDiff = []
 
 function setDiffArray(arr1, arr2) {
+    let arrDiff = []
     let maxLength = arr1.length > arr2.length ? arr1.length : arr2.length
     for(let i = 0; i < maxLength; i++) {
         if(!arr1[i]) {
@@ -43,9 +67,10 @@ function setDiffArray(arr1, arr2) {
         }
         arr1[i] > arr2[i] ? arrDiff.push(arr1[i] - arr2[i]) : arrDiff.push(arr2[i] - arr1[i])
     }
+    return arrDiff
 }
 
-setDiffArray(arr1, arr2)
+let resultArr = setDiffArray(arr1, arr2)
 
 
 // №5 
@@ -53,9 +78,9 @@ setDiffArray(arr1, arr2)
 
 let arr1 = [1,2,3,4,5,6,7,8,9,10]
 let arr2 = [1,2,3,4,5,6,7]
-let arrSum = []
 
 function setSumArray(arr1, arr2) {
+    let arrSum = []
     let maxLength = arr1.length > arr2.length ? arr1.length : arr2.length
     for(let i = 0; i < maxLength; i++) {
         if(!arr1[i]) {
@@ -65,18 +90,21 @@ function setSumArray(arr1, arr2) {
         }
         arrSum.push(arr1[i] + arr2[i])
     }
+    return arrSum
 }
 
-setSumArray(arr1, arr2)
+let resultArr = setSumArray(arr1, arr2)
 
 
 // №6 
 // Напишите код, который разворачивает исходный массив и сохраняет это в новую переменную. Например: исходный массив - [1, 2, 3], результирующий массив - [3, 2, 1]
 
-let arr = [1,2,3,4,5]
-
 function flipArray(arr) {
-    return arr.reverse()
+    let resultArr = []
+    for(let i = arr.length - 1; i >= 0; i--) {
+        resultArr.push(arr[i])
+    }
+    return resultArr
 }
 
 let reversedArr = flipArray(arr)
