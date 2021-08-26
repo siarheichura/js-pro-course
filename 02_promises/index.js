@@ -1,35 +1,35 @@
 // 1
 // Сделайте промис, внутри которого будет setTimeout в 3 секунды, после которой промис должен зарезолвится (то есть выполнится успешно).
 
-// let promiceResolve = new Promise(resolve => setTimeout(() => resolve('done'), 3000))
-// promiceResolve.then(result => console.log(result))
+let promiceResolve = new Promise(resolve => setTimeout(() => resolve('done'), 3000))
+promiceResolve.then(result => console.log(result))
 
 
 // 2
 // Сделайте промис, внутри которого будет setTimeout в 3 секунды, после которой промис должен зареджектится (то есть выполнится с ошибкой).
 
-// let promiceReject = new Promise(reject => setTimeout(() => reject(new Error('ooops, Error')), 3000))
-// promiceReject.then(result => console.log(result))
+let promiceReject = new Promise(reject => setTimeout(() => reject(new Error('ooops, Error')), 3000))
+promiceReject.then(result => console.log(result))
 
 
 // 3
 // Сделайте 3 промиса, в каждом из которых расположена функция setTimeout со случайной задержкой от 1 до 5 секунд. Пусть каждый промис своим результатом возвращает эту задержку. С помощью Promise.all получите массив результатов, найдите его сумму, выведите на экран.
 
-// let promiceArr = Promise.all([
-//     new Promise(resolve => setTimeout(() => resolve(3000), 3000)),
-//     new Promise(resolve => setTimeout(() => resolve(5000), 5000)),
-//     new Promise(resolve => setTimeout(() => resolve(1000), 1000))
-// ]).then(result => result.reduce((prev, curr) => prev + curr), 0)
-//   .then(result => console.log(result))
+let promiceArr = Promise.all([
+    new Promise(resolve => setTimeout(() => resolve(3000), 3000)),
+    new Promise(resolve => setTimeout(() => resolve(5000), 5000)),
+    new Promise(resolve => setTimeout(() => resolve(1000), 1000))
+]).then(result => result.reduce((prev, curr) => prev + curr), 0)
+  .then(result => console.log(result))
 
 
 // 4
 // Сделать запрос при помощи fetch на адрес https://jsonplaceholder.typicode.com/users, Отфильтровать массив пользователей, чтобы остались только пользователи с четными id.
 
-// fetch('https://jsonplaceholder.typicode.com/users')
-//     .then(response => response.json())
-//     .then(result => result.filter(item => item.id % 2 === 0))
-//     .then(result => console.log(result))
+fetch('https://jsonplaceholder.typicode.com/users')
+    .then(response => response.json())
+    .then(result => result.filter(item => item.id % 2 === 0))
+    .then(result => console.log(result))
 
 // 5
 // Сделать запрос при помощи fetch на адрес https://jsonplaceholder.typicode.com/users, вывести список карточек пользователей, отобразить имя, телефон и остальную информацию каждого пользователя. Вывести в html внутри div с id = 1
