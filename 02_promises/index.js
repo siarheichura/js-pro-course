@@ -1,14 +1,14 @@
 // 1
 // Сделайте промис, внутри которого будет setTimeout в 3 секунды, после которой промис должен зарезолвится (то есть выполнится успешно).
 
-let promiceResolve = new Promise(resolve => setTimeout(() => resolve('done'), 3000))
+let promiceResolve = new Promise((resolve, reject) => setTimeout(() => resolve('done'), 3000))
 promiceResolve.then(result => console.log(result))
 
 
 // 2
 // Сделайте промис, внутри которого будет setTimeout в 3 секунды, после которой промис должен зареджектится (то есть выполнится с ошибкой).
 
-let promiceReject = new Promise(reject => setTimeout(() => reject(new Error('ooops, Error')), 3000))
+let promiceReject = new Promise((resolve, reject) => setTimeout(() => reject(new Error('ooops, Error')), 3000))
 promiceReject.then(result => console.log(result))
 
 
@@ -17,19 +17,23 @@ promiceReject.then(result => console.log(result))
 
 let promiceArr = Promise.all([
     new Promise(resolve => setTimeout(() => resolve(3000), 3000)),
-    new Promise(resolve => setTimeout(() => resolve(5000), 5000)),
+    new Promise(resolve => setTimeout(() => resolve(5000), 2000)),
     new Promise(resolve => setTimeout(() => resolve(1000), 1000))
-]).then(result => result.reduce((prev, curr) => prev + curr), 0)
+])
+  .then(result => result.reduce((prev, curr) => prev + curr), 0)
   .then(result => console.log(result))
 
 
 // 4
 // Сделать запрос при помощи fetch на адрес https://jsonplaceholder.typicode.com/users, Отфильтровать массив пользователей, чтобы остались только пользователи с четными id.
 
-fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
-    .then(result => result.filter(item => item.id % 2 === 0))
-    .then(result => console.log(result))
+async function getEvenUsers() {
+    let response = await fetch('https://jsonplaceholder.typicode.com/users')
+    let result = await response.json()
+    let evenUsers = await result.filter(item => item.id % 2 === 0)
+    console.log(evenUsers) 
+}
+
 
 // 5
 // Сделать запрос при помощи fetch на адрес https://jsonplaceholder.typicode.com/users, вывести список карточек пользователей, отобразить имя, телефон и остальную информацию каждого пользователя. Вывести в html внутри div с id = 1
@@ -44,12 +48,10 @@ function printCards(obj) {
     userCardsWrapper.append(userCard) 
 }
 
-function renderUserList() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
-    .then(result => {
-        result.forEach(item => printCards(item))
-    })
+async function renderUserList() {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users')
+    const result = await response.json()
+    result.forEach(item => printCards(item))
 }
 
 renderUserList()
@@ -72,17 +74,14 @@ function printTodo(title, isCompleted) {
     todosWrapper.append(todo)
 }
 
-function renderTodoList() {
+async function renderTodoList() {
     let userId = prompt('Введите userId (число от 1 до 10)')
-    fetch(`https://jsonplaceholder.typicode.com/users/${userId}/todos`)
-        .then(response => response.json())
-        .then(result => {
-            result.forEach(item => {
-                let { title, completed } = item
-                printTodo(title, completed)
-            })
-        })
-
+    let response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/todos`)
+    let result = await response.json()
+    result.forEach(item => {
+        let { title, completed } = item
+        printTodo(title, completed)
+    })
 }
 
 renderTodoList()
@@ -101,15 +100,17 @@ renderTodoList()
 
 const photosWrapper = document.getElementById('3')
 
-fetch(`https://jsonplaceholder.typicode.com/albums/1/photos`)
-    .then(response => response.json())
-    .then(result => {
-        result.forEach(item => {
-            let photo = document.createElement('img')
-            photo.src = item.url
-            photosWrapper.append(photo)
-        })
+async function printUsersPhotos() {
+    let response = await fetch(`https://jsonplaceholder.typicode.com/albums/1/photos`)
+    let result = await response.json()
+    result.forEach(item => {
+        let photo = document.createElement('img')
+        photo.src = item.url
+        photosWrapper.append(photo)
     })
+}
+
+printUsersPhotos()
 
 photosWrapper.addEventListener('click', event => {
     if(event.target.tagName === 'IMG') {
